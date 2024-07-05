@@ -102,9 +102,11 @@ public class PeopleManager : MonoBehaviour
         updateItems();
     }
 
-    void updateItems()
+    async void updateItems()
     {
-        filteredPeople = filter(query).ToList();
+        var filterTask = Task.Run(() => filter(query).ToList());
+        
+        filteredPeople = await filterTask;
 
         foreach (var card in scrollContent.GetComponentsInChildren<PersonCard>())
             Destroy(card.gameObject);
